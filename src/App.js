@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Searcher from './components/Searcher';
-import Footer from './components/Footer';
-import Carousel from './components/Carousel';
-import Album from './components/Album';
-import Container from './components/Container';
+
+const Footer = React.lazy(() => import('./components/Footer'))
+const Carousel = React.lazy(() => import('./components/Carousel'))
+const Album = React.lazy(() => import('./components/Album'))
+const Container = React.lazy(() => import('./components/Container'))
 
 const sections = [
   { title: 'Vuelos', url: '#' },
@@ -21,12 +22,20 @@ const sections = [
 function App() {
   return (
     <div className="App">
-      <Header title="Viajes" sections={sections} />
-      <Searcher/>
-      <Carousel/>
-      <Album/>
-      <Container/>
-      <Footer/>
+        <Header title="Viajes" sections={sections} />
+        <Searcher/>
+      <Suspense fallback={<div>loading third comp...</div>}>
+        <Carousel />
+      </Suspense>
+      <Suspense fallback={<div>loading fouth comp...</div>}>
+        <Album />
+      </Suspense>
+      <Suspense fallback={<div>loading fifth comp...</div>}>
+        <Container />
+      </Suspense>
+      <Suspense fallback={<div>loading fifth comp...</div>}>
+        <Footer />
+      </Suspense>
     </div>
   );
 }
